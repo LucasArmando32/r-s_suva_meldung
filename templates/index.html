@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SUVA Anmeldung - R+S Asbestsanierung</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<header>
+    <div class="header-title">SUVA Anmeldung</div>
+</header>
+
+<div class="container">
+
+    <h1>SUVA Anmeldung - Asbestsanierung</h1>
+    <p class="intro">Fülle das Formular aus und erhalte automatisch die drei Dokumente: <strong>Sanierungsplan</strong>, <strong>Luftbilanz</strong> und <strong>Alarmliste</strong>.</p>
+
+    {% if message %}
+    <div class="message">{{ message }}</div>
+    {% endif %}
+
+    <form action="/generate" method="POST">
+
+        <!-- Abschnitt 0: Dokumentenauswahl -->
+        <div class="section">
+            <h2>0. Sanierungsplan-Variante</h2>
+            <p class="section-hint">Welche Vorlage soll für den Sanierungsplan verwendet werden?</p>
+            <div class="radio-group">
+                <label class="radio-item"><input type="radio" name="sanierungsplan_variante" value="ekas" checked> EKAS (Steinrieselstrasse-Stil)</label>
+                <label class="radio-item"><input type="radio" name="sanierungsplan_variante" value="factsheet"> Factsheet (Tulpenweg-Stil)</label>
+            </div>
+        </div>
+
+        <!-- Abschnitt 1: Baustelle -->
+        <div class="section">
+            <h2>1. Baustelle</h2>
+
+            <label>Objekt / Beschreibung <span class="required">*</span></label>
+            <input type="text" name="baustelle_objekt" required placeholder="z.B. MFH Badewanne Sanierung">
+
+            <label>Adresse <span class="required">*</span></label>
+            <input type="text" name="baustelle_adresse" required placeholder="z.B. Tulpenweg 105">
+
+            <label>PLZ / Ort <span class="required">*</span></label>
+            <input type="text" name="baustelle_plz_ort" required placeholder="z.B. 3098 Köniz">
+        </div>
+
+        <!-- Abschnitt 2: Auftraggeber -->
+        <div class="section">
+            <h2>2. Auftraggeber</h2>
+
+            <label>Name / Firma <span class="required">*</span></label>
+            <input type="text" name="auftraggeber_name" required>
+
+            <div class="grid-2">
+                <div>
+                    <label>Adresse <span class="required">*</span></label>
+                    <input type="text" name="auftraggeber_adresse" required>
+                </div>
+                <div>
+                    <label>PLZ / Ort <span class="required">*</span></label>
+                    <input type="text" name="auftraggeber_plz_ort" required>
+                </div>
+            </div>
+        </div>
+
+        <!-- Abschnitt 3: Bauherr -->
+        <div class="section">
+            <h2>3. Bauherr</h2>
+
+            <label>Firma / Name <span class="required">*</span></label>
+            <input type="text" name="bauherr_firma" required>
+
+            <div class="grid-2">
+                <div>
+                    <label>Adresse <span class="required">*</span></label>
+                    <input type="text" name="bauherr_adresse" required>
+                </div>
+                <div>
+                    <label>PLZ / Ort <span class="required">*</span></label>
+                    <input type="text" name="bauherr_plz_ort" required>
+                </div>
+                <div>
+                    <label>Telefon</label>
+                    <input type="tel" name="bauherr_telefon" placeholder="z.B. 031 751 00 73">
+                </div>
+                <div>
+                    <label>E-Mail</label>
+                    <input type="email" name="bauherr_email">
+                </div>
+            </div>
+        </div>
+
+        <!-- Abschnitt 4: Sanierungsart -->
+        <div class="section">
+            <h2>4. Sanierungsart</h2>
+
+            <label>Art der Sanierung (Mehrfachauswahl)</label>
+            <div class="checkbox-group">
+                <label class="checkbox-item"><input type="checkbox" name="art_asbest" value="ja" checked> Asbest-Sanierung</label>
+                <label class="checkbox-item"><input type="checkbox" name="art_pcb" value="ja"> PCB-Sanierung</label>
+                <label class="checkbox-item"><input type="checkbox" name="art_pak" value="ja"> PAK-Sanierung</label>
+                <label class="checkbox-item"><input type="checkbox" name="suva_anmeldung" value="ja" checked> SUVA Anmeldung erforderlich</label>
+            </div>
+
+            <div class="grid-2">
+                <div>
+                    <label>Ort (Bearbeitung) <span class="required">*</span></label>
+                    <input type="text" name="ort_bearbeitung" value="Hinterkappelen" required>
+                </div>
+                <div>
+                    <label>Datum <span class="required">*</span></label>
+                    <input type="date" name="datum_bearbeitung" required>
+                </div>
+            </div>
+        </div>
+
+        <!-- Abschnitt 5: Schadstoff -->
+        <div class="section">
+            <h2>5. Schadstoff</h2>
+
+            <label>Art des Schadstoffs <span class="required">*</span></label>
+            <input type="text" name="schadstoff_art" required placeholder="z.B. Asbesthaltiger Klebemörtel auf Wandfliesen">
+
+            <label>Menge <span class="required">*</span></label>
+            <input type="text" name="schadstoff_menge" required placeholder="z.B. 68 m2">
+
+            <label>Lage (Beschreibung) <span class="required">*</span></label>
+            <textarea name="schadstoff_lage" required placeholder="z.B. EG: Nassraum-WC-Küche-Korridor"></textarea>
+
+            <div class="grid-2">
+                <div>
+                    <label class="radio-label-inline">Rückbau</label>
+                    <div class="radio-group">
+                        <label class="radio-item"><input type="radio" name="rueckbau" value="ja"> Ja</label>
+                        <label class="radio-item"><input type="radio" name="rueckbau" value="nein" checked> Nein</label>
+                    </div>
+                </div>
+                <div>
+                    <label class="radio-label-inline">Umbau</label>
+                    <div class="radio-group">
+                        <label class="radio-item"><input type="radio" name="umbau" value="ja" checked> Ja</label>
+                        <label class="radio-item"><input type="radio" name="umbau" value="nein"> Nein</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Abschnitt 6: Personal -->
+        <div class="section">
+            <h2>6. Personal (Baustellenpersonal)</h2>
+            <p class="section-hint">Ein Mitarbeiter pro Zeile. Format: Vorname Nachname AHV-Nr.</p>
+            <textarea name="personal" rows="6">Cintia Reitmann 756.5257.7207.03
+Werner Neuhaus 756.5596.8850.64
+Luis Enrique Silva Ccanto 756.2154.4658.05</textarea>
+        </div>
+
+        <!-- Abschnitt 7: Arbeitssystem -->
+        <div class="section">
+            <h2>7. Arbeitssystem</h2>
+
+            <label>Beschreibung</label>
+            <textarea name="arbeitssystem" rows="3">Abspitzen mit Nassverfahren und schleifen mit Quellabsaugung. Staubsauger in der Zone. Personen und Materialschleuse kombiniert (4 Kammer)</textarea>
+
+            <label>Anzahl Kammern Schleuse</label>
+            <input type="number" name="anzahl_kammern" value="4" min="1" max="4">
+        </div>
+
+        <!-- Abschnitt 8: Zeitraum -->
+        <div class="section">
+            <h2>8. Sanierungszeitraum</h2>
+            <div class="grid-3">
+                <div>
+                    <label>Sanierung von <span class="required">*</span></label>
+                    <input type="date" name="sanierung_von" required>
+                </div>
+                <div>
+                    <label>Sanierung bis <span class="required">*</span></label>
+                    <input type="date" name="sanierung_bis" required>
+                </div>
+                <div>
+                    <label>Besprechung vom</label>
+                    <input type="date" name="besprechung_datum">
+                </div>
+            </div>
+        </div>
+
+        <!-- Abschnitt 9: Entsorgung -->
+        <div class="section">
+            <h2>9. Entsorgung</h2>
+            <div class="grid-2">
+                <div>
+                    <label>Deponie</label>
+                    <select name="deponie">
+                        <option value="Cholwald Ennetmoos" selected>Cholwald Ennetmoos</option>
+                        <option value="SOVAG, Biel">SOVAG, Biel</option>
+                        <option value="Teuftal, Frauenkappelen">Teuftal, Frauenkappelen</option>
+                        <option value="Altola, Olten">Altola, Olten</option>
+                        <option value="SOGES, Wimmis Steinigand">SOGES, Wimmis Steinigand</option>
+                    </select>
+                </div>
+                <div>
+                    <label>Transport</label>
+                    <select name="transport">
+                        <option value="Uhlmann Transport AG" selected>Uhlmann Transport AG</option>
+                        <option value="Kästli Baustellentransporter">Kästli Baustellentransporter</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- Abschnitt 10: Luftbilanz -->
+        <div class="section">
+            <h2>10. Luftbilanz - Raumdimensionen</h2>
+            <p class="section-hint">Dimensionen der Hauptzone (Teilzone 1) für die Luftbilanz-Berechnung.</p>
+
+            <div class="grid-3">
+                <div>
+                    <label>Länge (m) <span class="required">*</span></label>
+                    <input type="number" step="0.01" name="lb_laenge" value="4.06" required>
+                </div>
+                <div>
+                    <label>Breite (m) <span class="required">*</span></label>
+                    <input type="number" step="0.01" name="lb_breite" value="2.55" required>
+                </div>
+                <div>
+                    <label>Höhe (m) <span class="required">*</span></label>
+                    <input type="number" step="0.01" name="lb_hoehe" value="2.40" required>
+                </div>
+            </div>
+
+            <label>Lufterneuerung</label>
+            <select name="lb_luftwechsel">
+                <option value="6">6-fach (normale Gefährdung)</option>
+                <option value="8">8-fach (komplexe Sanierung)</option>
+                <option value="10" selected>10-fach (kleine Zone, 1 Kammer Schleuse)</option>
+            </select>
+
+            <label>Zonenbezeichnung</label>
+            <input type="text" name="lb_zone" placeholder="z.B. Wandfliesen 1.4 m2">
+        </div>
+
+        <!-- Abschnitt 11: Alarmliste - Notfalldaten -->
+        <div class="section">
+            <h2>11. Alarmliste - Notfalldaten</h2>
+            <p class="section-hint">Daten für die Alarmliste (nächster Arzt, Spital, Gruppenführer, etc.)</p>
+
+            <label>REGA Koordinaten</label>
+            <input type="text" name="rega_koordinaten" placeholder="z.B. 46.9353182, 7.4951009, 65">
+
+            <h3 style="color:var(--rs-red); margin-top:20px;">Nächster Arzt</h3>
+            <div class="grid-2">
+                <div>
+                    <label>Name</label>
+                    <input type="text" name="arzt_name" placeholder="z.B. Dr. med. von Rütte Regula">
+                </div>
+                <div>
+                    <label>Telefon</label>
+                    <input type="text" name="arzt_telefon" placeholder="z.B. 031 951 10 52">
+                </div>
+                <div>
+                    <label>Adresse</label>
+                    <input type="text" name="arzt_adresse" placeholder="z.B. Alpenstrasse 26">
+                </div>
+                <div>
+                    <label>PLZ / Ort</label>
+                    <input type="text" name="arzt_plz_ort" placeholder="z.B. 3073 Muri bei Bern">
+                </div>
+            </div>
+
+            <h3 style="color:var(--rs-red); margin-top:20px;">Nächstes Spital</h3>
+            <div class="grid-2">
+                <div>
+                    <label>Name</label>
+                    <input type="text" name="spital_name" placeholder="z.B. Inselspital">
+                </div>
+                <div>
+                    <label>Telefon</label>
+                    <input type="text" name="spital_telefon" placeholder="z.B. 031 632 21 11">
+                </div>
+                <div>
+                    <label>Adresse</label>
+                    <input type="text" name="spital_adresse" placeholder="z.B. Freiburgstrasse 20">
+                </div>
+                <div>
+                    <label>PLZ / Ort</label>
+                    <input type="text" name="spital_plz_ort" placeholder="z.B. 3010 Bern">
+                </div>
+            </div>
+
+            <label>Weg zum nächsten Spital (Distanz / Zeit)</label>
+            <input type="text" name="weg_zum_spital" placeholder="z.B. 6.5km, 14 Minuten">
+
+            <h3 style="color:var(--rs-red); margin-top:20px;">Gruppenführer (Benachrichtigung bei Unfall)</h3>
+            <div class="grid-2">
+                <div>
+                    <label>Name</label>
+                    <input type="text" name="gruppenfuehrer_name" placeholder="z.B. Jakson Da Costa">
+                </div>
+                <div>
+                    <label>Telefon</label>
+                    <input type="text" name="gruppenfuehrer_telefon" placeholder="z.B. 079 844 65 23">
+                </div>
+            </div>
+        </div>
+
+        <!-- Abschnitt 12: Ersteller -->
+        <div class="section">
+            <h2>12. Ersteller</h2>
+            <label>Name / Vorname <span class="required">*</span></label>
+            <input type="text" name="ersteller_name" value="Cintia Reitmann" required>
+        </div>
+
+        <!-- Submit -->
+        <div class="submit-wrap">
+            <button type="submit">3 Dokumente generieren &amp; herunterladen</button>
+        </div>
+
+    </form>
+
+</div>
+
+<footer>
+    Generiert: <strong>Sanierungsplan.docx</strong> &nbsp;&middot;&nbsp; <strong>Luftbilanz.xlsx</strong> &nbsp;&middot;&nbsp; <strong>Alarmliste.docx</strong>
+</footer>
+
+</body>
+</html>
