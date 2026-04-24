@@ -1,0 +1,98 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 500" fill="none">
+  <defs>
+    <linearGradient id="suitGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f8fafc"/>
+      <stop offset="100%" stop-color="#cbd5e1"/>
+    </linearGradient>
+    <linearGradient id="suitShadow" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#94a3b8"/>
+      <stop offset="100%" stop-color="#64748b"/>
+    </linearGradient>
+    <linearGradient id="maskGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#334155"/>
+      <stop offset="100%" stop-color="#0f172a"/>
+    </linearGradient>
+    <radialGradient id="gogglesGrad" cx="50%" cy="40%">
+      <stop offset="0%" stop-color="#0ea5e9" stop-opacity="0.2"/>
+      <stop offset="100%" stop-color="#0c4a6e"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Shoulders / Body -->
+  <path d="M 50 500 Q 50 320 120 300 L 280 300 Q 350 320 350 500 Z" fill="url(#suitGrad)" stroke="#010828" stroke-width="3"/>
+
+  <!-- Suit seams -->
+  <path d="M 200 300 L 200 500" stroke="#94a3b8" stroke-width="1" stroke-dasharray="4 4" opacity="0.5"/>
+  <path d="M 120 300 Q 130 350 140 400" stroke="#94a3b8" stroke-width="1" opacity="0.5"/>
+  <path d="M 280 300 Q 270 350 260 400" stroke="#94a3b8" stroke-width="1" opacity="0.5"/>
+
+  <!-- Zipper -->
+  <rect x="196" y="305" width="8" height="120" fill="#64748b" opacity="0.4"/>
+  <circle cx="200" cy="420" r="6" fill="#6FFF00"/>
+
+  <!-- Neck -->
+  <rect x="170" y="270" width="60" height="40" fill="url(#suitShadow)" stroke="#010828" stroke-width="2"/>
+
+  <!-- Hood / Helmet -->
+  <path d="M 110 180 Q 110 80 200 70 Q 290 80 290 180 L 290 260 Q 200 290 110 260 Z" fill="url(#suitGrad)" stroke="#010828" stroke-width="3"/>
+
+  <!-- Hood drawstring -->
+  <path d="M 135 240 Q 200 255 265 240" stroke="#64748b" stroke-width="2" fill="none"/>
+
+  <!-- Face opening inset (darker interior) -->
+  <ellipse cx="200" cy="180" rx="75" ry="80" fill="#1e293b"/>
+
+  <!-- Goggles frame -->
+  <path d="M 130 160 Q 130 135 160 130 L 240 130 Q 270 135 270 160 L 270 195 Q 265 210 240 210 L 160 210 Q 135 210 130 195 Z"
+        fill="url(#maskGrad)" stroke="#010828" stroke-width="2"/>
+
+  <!-- Goggles lens (left) -->
+  <ellipse cx="167" cy="170" rx="25" ry="20" fill="url(#gogglesGrad)" stroke="#0c4a6e" stroke-width="2"/>
+  <!-- Goggles lens (right) -->
+  <ellipse cx="233" cy="170" rx="25" ry="20" fill="url(#gogglesGrad)" stroke="#0c4a6e" stroke-width="2"/>
+
+  <!-- Goggles bridge -->
+  <rect x="190" y="165" width="20" height="8" rx="2" fill="#0f172a"/>
+
+  <!-- Eyes (tracking) - these get moved by JS -->
+  <g class="worker-eye-group" data-eye-center-x="167" data-eye-center-y="170">
+    <circle cx="167" cy="170" r="8" fill="#EFF4FF"/>
+    <circle class="worker-pupil" cx="167" cy="170" r="4.5" fill="#010828"/>
+    <circle class="worker-shine" cx="165" cy="168" r="1.5" fill="#fff"/>
+  </g>
+  <g class="worker-eye-group" data-eye-center-x="233" data-eye-center-y="170">
+    <circle cx="233" cy="170" r="8" fill="#EFF4FF"/>
+    <circle class="worker-pupil" cx="233" cy="170" r="4.5" fill="#010828"/>
+    <circle class="worker-shine" cx="231" cy="168" r="1.5" fill="#fff"/>
+  </g>
+
+  <!-- Respirator mask body -->
+  <path d="M 140 215 Q 140 205 160 205 L 240 205 Q 260 205 260 215 L 258 260 Q 230 280 200 280 Q 170 280 142 260 Z"
+        fill="url(#maskGrad)" stroke="#010828" stroke-width="2"/>
+
+  <!-- Filter cartridges -->
+  <g>
+    <ellipse cx="155" cy="255" rx="22" ry="18" fill="#1e293b" stroke="#010828" stroke-width="2"/>
+    <circle cx="155" cy="255" r="12" fill="#0f172a"/>
+    <circle cx="155" cy="255" r="6" fill="#6FFF00" opacity="0.3"/>
+    <text x="155" y="259" text-anchor="middle" fill="#6FFF00" font-family="monospace" font-size="8" font-weight="bold">P3</text>
+  </g>
+  <g>
+    <ellipse cx="245" cy="255" rx="22" ry="18" fill="#1e293b" stroke="#010828" stroke-width="2"/>
+    <circle cx="245" cy="255" r="12" fill="#0f172a"/>
+    <circle cx="245" cy="255" r="6" fill="#6FFF00" opacity="0.3"/>
+    <text x="245" y="259" text-anchor="middle" fill="#6FFF00" font-family="monospace" font-size="8" font-weight="bold">P3</text>
+  </g>
+
+  <!-- Mask straps -->
+  <path d="M 140 220 Q 110 230 108 250" stroke="#334155" stroke-width="3" fill="none"/>
+  <path d="M 260 220 Q 290 230 292 250" stroke="#334155" stroke-width="3" fill="none"/>
+
+  <!-- Valve / exhale -->
+  <circle cx="200" cy="255" r="10" fill="#1e293b" stroke="#010828" stroke-width="1"/>
+  <circle cx="200" cy="255" r="4" fill="#0f172a"/>
+
+  <!-- RS Logo on chest -->
+  <rect x="168" y="340" width="64" height="28" rx="6" fill="#C8102E"/>
+  <text x="200" y="360" text-anchor="middle" fill="#fff" font-family="Anton, sans-serif" font-size="18" font-weight="bold">R+S</text>
+</svg>

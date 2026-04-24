@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 200" fill="none">
+  <!-- Spitzhammer (Pointing hammer) -->
+  <g transform="translate(20, 20)">
+    <!-- Handle -->
+    <rect x="40" y="60" width="110" height="14" rx="6" fill="#78350f" stroke="#451a03" stroke-width="1.5"/>
+    <!-- Grip wrap -->
+    <rect x="95" y="58" width="55" height="18" fill="#1e293b" opacity="0.6"/>
+    <!-- Head -->
+    <path d="M 20 50 L 50 50 L 60 60 L 55 80 L 45 80 L 40 72 L 20 72 Z" fill="#475569" stroke="#1e293b" stroke-width="2"/>
+    <!-- Pointed tip -->
+    <path d="M 20 50 L 0 55 L 0 65 L 20 72 Z" fill="#64748b" stroke="#1e293b" stroke-width="2"/>
+    <!-- Shine -->
+    <line x1="30" y1="55" x2="45" y2="55" stroke="#94a3b8" stroke-width="1"/>
+  </g>
+
+  <!-- Schleifmaschine (Angle grinder) -->
+  <g transform="translate(140, 30)">
+    <!-- Body -->
+    <rect x="30" y="30" width="90" height="40" rx="10" fill="#C8102E" stroke="#010828" stroke-width="2"/>
+    <!-- Motor housing -->
+    <rect x="100" y="25" width="30" height="50" rx="8" fill="#9E0D24" stroke="#010828" stroke-width="2"/>
+    <!-- Ventilation lines -->
+    <line x1="50" y1="40" x2="90" y2="40" stroke="#010828" stroke-width="1.5" opacity="0.5"/>
+    <line x1="50" y1="48" x2="90" y2="48" stroke="#010828" stroke-width="1.5" opacity="0.5"/>
+    <line x1="50" y1="56" x2="90" y2="56" stroke="#010828" stroke-width="1.5" opacity="0.5"/>
+    <!-- Grinding disk -->
+    <circle cx="15" cy="50" r="30" fill="#1e293b" stroke="#010828" stroke-width="2"/>
+    <circle cx="15" cy="50" r="25" fill="#334155"/>
+    <circle cx="15" cy="50" r="6" fill="#6FFF00"/>
+    <!-- Disk guard -->
+    <path d="M 15 20 Q 45 30 45 50 L 30 50 Q 30 35 15 30 Z" fill="#334155" stroke="#010828" stroke-width="1.5"/>
+    <!-- Motion/spark effect -->
+    <circle cx="-10" cy="50" r="2" fill="#6FFF00" opacity="0.6"/>
+    <circle cx="-15" cy="45" r="1.5" fill="#6FFF00" opacity="0.4"/>
+    <circle cx="-18" cy="55" r="1" fill="#6FFF00" opacity="0.3"/>
+  </g>
+</svg>
