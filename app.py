@@ -31,6 +31,9 @@ app = Flask(
     static_folder=STATIC_DIR,
 )
 
+# Generated-Ordner immer beim Start anlegen (auch unter Gunicorn/Docker)
+os.makedirs(GENERATED_DIR, exist_ok=True)
+
 
 @app.route("/")
 def index():

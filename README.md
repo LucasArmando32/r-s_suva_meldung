@@ -63,6 +63,41 @@ python3 app.py
 **Problem: Port 5000 war blockiert (macOS AirPlay)**
 > Die App verwendet jetzt Port **8000**.
 
+## Docker-Deployment (Dockploy)
+
+### Variante A: Dockploy (empfohlen)
+
+1. In Dockploy neuen **Compose / Application** anlegen
+2. Git-Repo angeben: `https://github.com/LucasArmando32/r-s_suva_meldung.git`
+3. Als Dockerfile-Pfad: `./Dockerfile`
+4. Port: **8000**
+5. Persistent Volume: `./generated:/app/generated` (damit generierte Dokumente bleiben)
+6. Deploy klicken
+
+Dockploy baut automatisch das Image und startet den Container.
+
+### Variante B: Lokal mit Docker
+
+```bash
+# Image bauen
+docker build -t rs-suva-anmeldung .
+
+# Container starten
+docker run -d -p 8000:8000 --name rs-suva rs-suva-anmeldung
+
+# Oder mit docker-compose
+docker compose up -d
+```
+
+Dann im Browser öffnen: http://127.0.0.1:8000
+
+### Updates deployen
+
+```bash
+git pull
+docker compose up -d --build
+```
+
 ## Struktur
 
 ```

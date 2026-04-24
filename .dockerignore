@@ -1,0 +1,38 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+.venv/
+
+# Generated / Output
+generated/
+outputs/
+
+# IDE / Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+
+# Git
+.git/
+.gitignore
+
+# Docs / Test
+README.md
+test_generators.py
+*.md
+
+# Docker selbst
+Dockerfile
+.dockerignore
+docker-compose*.yml
+
+# Start-Skripte (nicht fuer Docker noetig)
+start.sh
+start.bat
