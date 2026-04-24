@@ -232,8 +232,8 @@ def generate_alarmliste(data: dict, output_path: str):
 
     doc.add_paragraph()
 
-    # Tabelle mit den wichtigsten Informationen
-    rows = [
+    # Jeder Block in eigener Tabelle -> weisser Abstand dazwischen
+    blocks = [
         ("BAUSTELLEN-BEZEICHNUNG:",
             [data.get("baustelle_objekt", "")]),
         ("ADRESSE:",
@@ -252,16 +252,18 @@ def generate_alarmliste(data: dict, output_path: str):
              data.get("spital_telefon", "")]),
     ]
 
-    t = doc.add_table(rows=len(rows), cols=2)
-    t.columns[0].width = Cm(6)
-    t.columns[1].width = Cm(11)
-
-    for i, (label, values) in enumerate(rows):
-        _alarm_header_cell(t.rows[i].cells[0], label)
-        _alarm_value_cell(t.rows[i].cells[1], [v for v in values if v])
-        # Spaltenbreite pro Zelle setzen (python-docx Workaround)
-        t.rows[i].cells[0].width = Cm(6)
-        t.rows[i].cells[1].width = Cm(11)
+    for label, values in blocks:
+        block_table = doc.add_table(rows=1, cols=2)
+        block_table.columns[0].width = Cm(6)
+        block_table.columns[1].width = Cm(11)
+        _alarm_header_cell(block_table.rows[0].cells[0], label)
+        _alarm_value_cell(block_table.rows[0].cells[1], [v for v in values if v])
+        block_table.rows[0].cells[0].width = Cm(6)
+        block_table.rows[0].cells[1].width = Cm(11)
+        # kleine weisse Luecke zwischen den Bloecken
+        spacer = doc.add_paragraph()
+        spacer.paragraph_format.space_before = Pt(0)
+        spacer.paragraph_format.space_after = Pt(4)
 
     doc.add_paragraph()
 
@@ -302,7 +304,7 @@ def generate_alarmliste(data: dict, output_path: str):
     # Seitenumbruch vor Seite 2
     doc.add_page_break()
 
-    # Weg zum Spital
+    # Weg zum Spital - Header rot, Wert hell (weniger rote Tinte)
     weg_table = doc.add_table(rows=1, cols=1)
     cell = weg_table.cell(0, 0)
     set_cell_bg(cell, "C8102E")
@@ -314,15 +316,20 @@ def generate_alarmliste(data: dict, output_path: str):
     run.font.color.rgb = RGBColor(0xFF, 0xFF, 0xFF)
     run.font.name = "Arial"
 
+    # weisser Abstand zwischen Header und Wert
+    spacer = doc.add_paragraph()
+    spacer.paragraph_format.space_before = Pt(0)
+    spacer.paragraph_format.space_after = Pt(4)
+
     weg_val_table = doc.add_table(rows=1, cols=1)
     cell = weg_val_table.cell(0, 0)
-    set_cell_bg(cell, "C8102E")
+    set_cell_bg(cell, "F5F5F5")
     cell.text = ""
     p = cell.paragraphs[0]
     run = p.add_run(data.get("weg_zum_spital", ""))
     run.bold = True
     run.font.size = Pt(14)
-    run.font.color.rgb = RGBColor(0xFF, 0xFF, 0xFF)
+    run.font.color.rgb = RGBColor(0x1A, 0x1A, 0x1A)
     run.font.name = "Arial"
 
     # Platzhalter fuer Karte
@@ -340,8 +347,18 @@ def generate_alarmliste(data: dict, output_path: str):
     datum_bearb = format_date(data.get("datum_bearbeitung"))
 
     sig_table = doc.add_table(rows=3, cols=2)
-    _alarm_header_cell(sig_table.cell(0, 0), "ERSTELLT:")
-    _alarm_header_cell(sig_table.cell(0, 1), "EINGESEHEN:")
+    # Graue Header fuer Unterschriftsfelder (weniger rote Tinte)
+    for cell, label in [(sig_table.cell(0, 0), "ERSTELLT:"),
+                        (sig_table.cell(0, 1), "EINGESEHEN:")]:
+        set_cell_bg(cell, "D9D9D9")
+        cell.vertical_alignment = WD_ALIGN_VERTICAL.CENTER
+        cell.text = ""
+        p = cell.paragraphs[0]
+        run = p.add_run(label)
+        run.bold = True
+        run.font.color.rgb = RGBColor(0x1A, 0x1A, 0x1A)
+        run.font.size = Pt(11)
+        run.font.name = "Arial"
 
     _alarm_value_cell(sig_table.cell(1, 0), "(Datum, Bauführer, Unterschrift)")
     _alarm_value_cell(sig_table.cell(1, 1), "(Datum, Polier, Unterschrift)")
