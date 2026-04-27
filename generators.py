@@ -152,13 +152,38 @@ def generate_sanierungsplan(data: dict, template_path: str, output_path: str):
 
 def generate_luftbilanz(data: dict, template_path: str, output_path: str):
     """Fuellt das Luftbilanz-Excel-Template."""
+    from openpyxl.styles import Alignment
+
     shutil.copyfile(template_path, output_path)
     os.chmod(output_path, 0o664)
     wb = openpyxl.load_workbook(output_path)
     ws = wb.active
 
-    ws["C3"] = f"Asbestsanierung: {data.get('baustelle_objekt', '')}, {data.get('baustelle_adresse', '')}, {data.get('baustelle_plz_ort', '')}"
-    ws["C4"] = data.get("lb_zone", data.get("schadstoff_art", ""))
+    objekt_text = f"Asbestsanierung: {data.get('baustelle_objekt', '')}, {data.get('baustelle_adresse', '')}, {data.get('baustelle_plz_ort', '')}"
+    zone_text = data.get("lb_zone", data.get("schadstoff_art", ""))
+
+    ws["C3"] = objekt_text
+    ws["C4"] = zone_text
+
+    # Text in C3/C4 vollstaendig sichtbar machen:
+    # 1) ueber mehrere Spalten verbinden (C bis F)
+    # 2) Zeilenumbruch + vertikale Ausrichtung aktivieren
+    # 3) Zeilenhoehe automatisch anpassen
+    for row, text in [(3, objekt_text), (4, zone_text)]:
+        try:
+            ws.unmerge_cells(start_row=row, start_column=3, end_row=row, end_column=6)
+        except Exception:
+            pass
+        ws.merge_cells(start_row=row, start_column=3, end_row=row, end_column=6)
+        cell = ws.cell(row=row, column=3)
+        cell.alignment = Alignment(wrap_text=True, vertical="center", horizontal="left")
+        # Zeilenhoehe: ca. 15pt pro Zeile, schaetzen anhand Textlaenge
+        approx_chars_per_line = 60
+        lines = max(1, (len(text) // approx_chars_per_line) + (1 if len(text) % approx_chars_per_line else 0))
+        ws.row_dimensions[row].height = max(20, lines * 16)
+
+    # Spalte C breiter, damit auch ohne Merge der Text gut sichtbar ist
+    ws.column_dimensions["C"].width = max(ws.column_dimensions["C"].width or 0, 35)
 
     try:
         ws["B9"] = float(data.get("lb_laenge", 0))
@@ -209,8 +234,10 @@ def generate_alarmliste(data: dict, output_path: str):
     """Erstellt die Alarmliste fuer Baustellen im R+S-Stil."""
     doc = Document()
 
-    # Seitenraender
+    # A4-Format (210 x 297 mm) und Seitenraender
     for section in doc.sections:
+        section.page_width = Mm(210)
+        section.page_height = Mm(297)
         section.top_margin = Cm(1.5)
         section.bottom_margin = Cm(1.5)
         section.left_margin = Cm(2)
